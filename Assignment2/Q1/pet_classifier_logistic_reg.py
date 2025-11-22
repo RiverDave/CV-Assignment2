@@ -16,15 +16,6 @@ def preprocess(path : str):
         shuffle=True
     )
 
-    # # ## data augmentation
-    # data_augmentation = tf.keras.Sequential([
-    #     tf.keras.layers.RandomFlip(mode="horizontal"),
-    #     tf.keras.layers.RandomRotation(0.1),
-    #     tf.keras.layers.RandomZoom(0.1),
-    # ])
-
-    # dataset = dataset.map(lambda x, y: (data_augmentation(x, training=True), y))
-
     ## Normalize
     normalization_layer = tf.keras.layers.Rescaling(1./255)
     dataset = dataset.map(lambda x,y: (normalization_layer(x), y))
@@ -42,28 +33,28 @@ def get_model(dataset, validation_dataset):
 
     model = tf.keras.Sequential()
         
-    model.add(tf.keras.layers.Dense(1, activation='sigmoid',  input_shape=(2700,)))
+    model.add(tf.keras.layers.Dense(
+    1, 
+    activation='sigmoid',
+    input_shape=(2700,),
+    kernel_regularizer=tf.keras.regularizers.l2(0.01)  # Add penalty for large weights
+    ))
     model.compile(optimizer='sgd', loss='binary_crossentropy', metrics=['accuracy'])
-
-    ## Callback to check if we get diminishing returns from over-training
-    # early_stop = tf.keras.callbacks.EarlyStopping(
-    #     monitor='val_accuracy',
-    #     patience=10, 
-    #     restore_best_weights=True,
-    #     start_from_epoch=10
-    # )
 
     ## Train the model
     model.fit(
         dataset,
         verbose=2,
-        epochs=25,
+        epochs=50,
         validation_data=validation_dataset, # This improved accuracy
-        # callbacks=[early_stop]
         ) 
 
     return model
 
+"""
+Test against our own dataset. contains mainly dogs Limited to only 4 images,
+Might not be the best accuracy representation of our model.
+"""
 def test_external(model, dataset) -> None:
 
     # Make predictions
@@ -94,14 +85,9 @@ if __name__ == "__main__":
     test_dataset = preprocess(path='./Q1/test/')
     model = get_model(train_dataset, validation_dataset=test_dataset)
 
-
-    print("============= Evaluating model ============")
-
-
     ## EVALUATE
 
     model.evaluate(test_dataset, verbose=0)
-    model.summary()
 
     # Test against our tiny own dataset.
     external_dataset = preprocess(path='./Q1/external')
