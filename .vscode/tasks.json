@@ -1,0 +1,50 @@
+{
+    // VS Code tasks configuration
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Activate python environment",
+            "type": "shell",
+            "command": "source",
+            "args": [".venv/bin/activate"],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            
+            "dependsOn": "Activate python environment",
+            "label": "Run Q1 Pet Classifier",
+            "type": "shell",
+            "command": "python3",
+            "args": ["Assignment2/Q1/pet_classifier.py"],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Run Q2 Image Classifier",
+            "type": "shell",
+            "command": "python3",
+            "args": ["Q2/minst_classifier.py"],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        }
+    ]
+}
