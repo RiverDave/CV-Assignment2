@@ -53,7 +53,8 @@ def get_model(dataset, validation_dataset):
 
 """
 Test against our own dataset. contains mainly dogs Limited to only 4 images,
-Might not be the best accuracy representation of our model.
+Might not be the best accuracy representation of our model. Based on the current
+params roughly 75% accuracy. Could be improved with a proper CNN architecture.
 """
 def test_external(model, dataset) -> None:
 
