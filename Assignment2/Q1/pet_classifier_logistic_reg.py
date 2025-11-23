@@ -1,7 +1,7 @@
 """
 Some classification algorithms we know:
 
-- Logistic Regression
+- Logistic Regression (this is easier to do with keras)
 - k-Nearest Neighbors
 """
 import tensorflow as tf
